@@ -16,36 +16,49 @@ typedef vector<int> vi;
 typedef unordered_map<int, int> umap;
 
 void sortColors(vector<int>& nums){
-    int pStart = 0;
-    int pMiddle = 0;
-    int pEnd = nums.size()-1;
-    while(pStart != pStart){
-        ///
-        if(nums[pStart] == 0){
-            pStart++;
-        }
-        if(nums[pEnd] == 2){
-            pEnd--;
-        }
+   int pStart = 0;
+   int pMiddle = 0;
+   int pEnd = nums.size() -1;
 
-        ///
-        if(nums[pStart] == 2 || nums[pEnd] == 0){
-            //swap start and end
-            int temp = nums[pStart];
-            
-            nums.insert(nums.begin()+pStart, nums[pEnd]);
-            nums.erase(nums.begin()+pStart);
+   while(pMiddle < pEnd && pStart < pEnd){
+    if(nums[pStart] == 2 || nums[pEnd] == 0){
+        //swap
+        int temp = nums[pStart];
+        nums[pStart] = nums[pEnd];
+        nums[pEnd] = temp;
 
-            nums.insert(nums.begin()+pStart, nums[pEnd] );
-            nums.erase(nums.begin()+pEnd);
-        }
-
+        if(nums[pStart] == 0) pStart++;
+        if(nums[pEnd] == 2) pEnd--;
     }
-    
+    else if(nums[pStart] == 0 || nums[pEnd] == 2){
+        //skip
+        if(nums[pStart] == 0) pStart++;
+        if(nums[pEnd] == 2) pEnd--;
+    }
+    else{
+        pMiddle = pStart + 1;
+        while(nums[pMiddle] == 1 && pMiddle < pEnd){
+            pMiddle++;
+        }
+
+        if(nums[pMiddle] == 0){
+            //swap to start
+            nums[pMiddle] = 1;
+            nums[pStart] = 0;
+
+
+        }
+        if(nums[pMiddle] == 2){
+            //swap to end
+            nums[pMiddle] = 1;
+            nums[pEnd] = 2;
+        }
+    }
+   }
 }
 
 int main() {
-    vi nums = {2,0,2,1,1,0};
+    vi nums = {2,0,1};
     sortColors(nums);
 
     for(int i = 0; i < nums.size(); i++){
